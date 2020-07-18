@@ -166,13 +166,14 @@ class Trainer(object):
                         accum = 0
                         normalization = 0
                         
-                        try:
-                            if(total_stats.xent() < least_loss):
-                                least_loss = total_stats.xent()
-                            if (self.gpu_rank == 0):
-                                self._save(step)
-                        except:
-                            logger.info('Could not save model')
+                        if (step % 50 == 0):
+                            try:
+                                if(total_stats.xent() < least_loss):
+                                    least_loss = total_stats.xent()
+                                if (self.gpu_rank == 0):
+                                    self._save(step)
+                            except:
+                                logger.info('Could not save model')
 
                         step += 1
                         if step > train_steps:
