@@ -135,7 +135,7 @@ class Trainer(object):
         total_stats = Statistics()
         report_stats = Statistics()
         self._start_report_manager(start_time=total_stats.start_time)
-
+        least_loss = float('inf')
         while step <= train_steps:
 
             reduce_counter = 0
@@ -165,8 +165,10 @@ class Trainer(object):
                         true_batchs = []
                         accum = 0
                         normalization = 0
-                        if (step % self.save_checkpoint_steps == 0 and self.gpu_rank == 0):
-                            self._save(step)
+                        if(report_stats.xent() < least_loss):
+                            least_loss = report_stats.xent()
+                            if (self.gpu_rank == 0):
+                                self._save(step)
 
                         step += 1
                         if step > train_steps:
@@ -336,7 +338,8 @@ class Trainer(object):
             'opt': self.args,
             'optims': self.optims,
         }
-        checkpoint_path = os.path.join(self.args.model_path, 'model_step_%d.pt' % step)
+        checkpoint_path = os.path.join(self.args.model_path, 'model_step.pt')
+        os.remove(checkpoint_path)
         logger.info("Saving checkpoint %s" % checkpoint_path)
         # checkpoint_path = '%s_step_%d.pt' % (FLAGS.model_path, step)
         if (not os.path.exists(checkpoint_path)):
