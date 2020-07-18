@@ -165,10 +165,11 @@ class Trainer(object):
                         true_batchs = []
                         accum = 0
                         normalization = 0
-                        if(report_stats.xent() < least_loss):
-                            least_loss = report_stats.xent()
-                            if (self.gpu_rank == 0):
-                                self._save(step)
+                        if(report_stats.n_words != 0):
+                            if(report_stats.xent() < least_loss):
+                                least_loss = report_stats.xent()
+                                if (self.gpu_rank == 0):
+                                    self._save(step)
 
                         step += 1
                         if step > train_steps:
