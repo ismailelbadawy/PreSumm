@@ -168,9 +168,10 @@ class Trainer(object):
                         normalization = 0
                         if(total_stats.xent() < least_loss):
                             least_loss = total_stats.xent()
-                            logger.info(f'Current loss {total_stats.xent()} least loss is {least_loss}')
+                         
                             try:
                                  if (step > self.save_checkpoint_steps):
+                                    logger.info(f'Current loss {total_stats.xent()} least loss is {least_loss}')
                                     if (self.gpu_rank == 0):
                                         self._save(step)
                             except:
