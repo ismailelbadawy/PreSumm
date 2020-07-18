@@ -165,7 +165,7 @@ class Trainer(object):
                         true_batchs = []
                         accum = 0
                         normalization = 0
-                        
+                        logger.info(f'Trying to check for loss reduction : {report_stats.n_words}')
                         if(report_stats.n_words != 0):
                             logger.info(f'We have {report_stats.xent()} compared to least : {least_loss}')
                             if(report_stats.xent() < least_loss):
