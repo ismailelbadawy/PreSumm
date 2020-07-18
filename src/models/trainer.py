@@ -166,7 +166,7 @@ class Trainer(object):
                         accum = 0
                         normalization = 0
                         
-                        if (step % 50 == 0):
+                        if (step % self.save_checkpoint_steps == 0):
                             try:
                                 if(total_stats.xent() < least_loss):
                                     least_loss = total_stats.xent()
