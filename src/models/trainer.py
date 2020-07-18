@@ -166,16 +166,11 @@ class Trainer(object):
                         true_batchs = []
                         accum = 0
                         normalization = 0
-                        if(total_stats.xent() < least_loss):
-                            least_loss = total_stats.xent()
-                         
-                            try:
-                                 if (step > self.save_checkpoint_steps):
-                                    logger.info(f'Current loss {total_stats.xent()} least loss is {least_loss}')
-                                    if (self.gpu_rank == 0):
-                                        self._save(step)
-                            except:
-                                logger.info('Could not save model')
+                        
+                            
+                        if (step > self.save_checkpoint_steps):
+                           if (self.gpu_rank == 0):
+                               self._save(step)
 
                         step += 1
                         if step > train_steps:
