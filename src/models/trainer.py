@@ -109,6 +109,7 @@ class Trainer(object):
         The main training loops.
         by iterating over training data (i.e. `train_iter_fct`)
         and running validation (i.e. iterating over `valid_iter_fct`
+[2020-07-18 15:29:09,747 INFO] Step 550/ 4000; acc:  25.00; ppl: 212.10; xent: 5.36; lr: 0.00000039;   0/  2 tok/s;   3145 sec
 
         Args:
             train_iter_fct(function): a function that returns the train
@@ -166,7 +167,7 @@ class Trainer(object):
                         accum = 0
                         normalization = 0
                         
-                        if (step > 500):
+                        if (step > self.save_checkpoint_steps):
                             logger.info(f'Current loss {total_stats.xent()} least loss is {least_loss}')
                             try:
                                 if(total_stats.xent() < least_loss):
