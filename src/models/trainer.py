@@ -167,6 +167,7 @@ class Trainer(object):
                         normalization = 0
                         
                         if (step % self.save_checkpoint_steps == 0):
+                            logger.info(f'Current loss {total_stats.xent()} least loss is {least_loss}')
                             try:
                                 if(total_stats.xent() < least_loss):
                                     least_loss = total_stats.xent()
