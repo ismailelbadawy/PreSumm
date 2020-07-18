@@ -165,18 +165,14 @@ class Trainer(object):
                         true_batchs = []
                         accum = 0
                         normalization = 0
-                        try:
-                            logger.info(f'Trying to check for loss reduction : {report_stats.xent()}')
-                            logger.info(f'We have {report_stats.xent()} compared to least : {least_loss}')
-                            if(report_stats.xent() < least_loss):
-                                logger.info('Loss has decreased')
-                                least_loss = report_stats.xent()
-                                if (self.gpu_rank == 0):
-                                    self._save(step)
-                        except:
-                            logger.info(f'Failed to save model.')
                         
-                            
+                        try:
+                            if(total_stats.xent() < least_loss):
+                                least_loss = total_stats.xent()
+                            if (self.gpu_rank == 0):
+                                self._save(step)
+                        except:
+                            logger.info('Could not save model')
 
                         step += 1
                         if step > train_steps:
