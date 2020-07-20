@@ -99,6 +99,8 @@ class Trainer(object):
 
         self.loss = loss
 
+        self.current_loss = 0
+
         assert grad_accum_count > 0
         # Set model in training mode.
         if (model):
@@ -167,10 +169,11 @@ class Trainer(object):
                         accum = 0
                         normalization = 0
                         
-                            
                         if (step > self.save_checkpoint_steps):
-                           if (self.gpu_rank == 0):
-                               self._save(step)
+                            if (self.loss < least_loss) :
+                                least_loss = self.loss
+                                if (self.gpu_rank == 0):
+                                    self._save(step)
 
                         step += 1
                         if step > train_steps:
@@ -228,6 +231,8 @@ class Trainer(object):
             batch_stats = self.loss.sharded_compute_loss(batch, outputs, self.args.generator_shard_size, normalization)
 
             batch_stats.n_docs = int(src.size(0))
+
+            self.current_loss = batch_stats.loss
 
             total_stats.update(batch_stats)
             report_stats.update(batch_stats)
