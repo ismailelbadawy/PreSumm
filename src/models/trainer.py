@@ -170,8 +170,8 @@ class Trainer(object):
                         normalization = 0
                         
                         if (step > self.save_checkpoint_steps):
-                            if (self.loss < least_loss) :
-                                least_loss = self.loss
+                            if (self.current_loss < least_loss) :
+                                least_loss = self.current_loss
                                 if (self.gpu_rank == 0):
                                     self._save(step)
 
